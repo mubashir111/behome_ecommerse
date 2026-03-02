@@ -2,7 +2,7 @@
     Crafto - Decor store
 ====================================== */
 /* font */
-@import url('https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Marcellus&family=Outfit:wght@300;400;500;600;700&display=swap');
 
 /* variable */
 :root {
@@ -15,7 +15,7 @@
     --white: #F5F4F0;
     /* Alabaster White Text */
     --font-heading: 'Marcellus', serif;
-    --primary-font: 'Plus Jakarta Sans', sans-serif;
+    --primary-font: 'Outfit', sans-serif;
     --glass-bg: rgba(255, 255, 255, 0.05);
     /* Refined Glass */
     --glass-border: rgba(255, 255, 255, 0.08);
@@ -66,6 +66,21 @@ body {
     color: var(--white) !important;
     text-overflow: ellipsis;
     opacity: 0.7;
+}
+
+.placeholder-dark-gray::-webkit-input-placeholder {
+    color: var(--dark-gray) !important;
+    opacity: 0.6;
+}
+
+.placeholder-dark-gray::-moz-placeholder {
+    color: var(--dark-gray) !important;
+    opacity: 0.6;
+}
+
+.placeholder-dark-gray:-ms-input-placeholder {
+    color: var(--dark-gray) !important;
+    opacity: 0.6;
 }
 
 /* input placeholder color */
@@ -142,6 +157,34 @@ textarea:-ms-input-placeholder {
     height: 100%;
     background: radial-gradient(circle at 50% 40%, #2a2a2a 0%, var(--medium-gray) 70%);
     z-index: 0;
+}
+
+/* --- Mobile Menu Restoration --- */
+@media (max-width: 991px) {
+
+    /* Override template's default solid white background on mobile to keep the glass effect */
+    header .navbar.header-light {
+        background-color: transparent !important;
+    }
+
+    /* Force the hamburger menu lines to be white on the transparent background */
+    header .navbar.header-light .navbar-toggler-line {
+        background-color: var(--white) !important;
+    }
+
+    /* Restore the black background so slider content doesn't bleed through the menu */
+    .navbar-collapse {
+        background-color: var(--dark-gray);
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Ensure the main links have top borders to separate them nicely */
+    .navbar-nav .nav-item {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
 }
 
 /* header */
@@ -272,12 +315,14 @@ h2 {
 }
 
 .navbar .navbar-nav .nav-link {
+    font-family: var(--primary-font) !important;
     font-weight: 500;
     font-size: 16px;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
     color: var(--white) !important;
     padding-left: 15px !important;
     padding-right: 15px !important;
+    text-transform: uppercase;
 }
 
 .navbar .navbar-nav .nav-link:hover {
@@ -292,6 +337,7 @@ h2 {
 }
 
 .navbar .navbar-nav .dropdown .dropdown-menu a {
+    font-family: var(--primary-font) !important;
     font-size: 15px;
     font-weight: 500;
     padding-bottom: 4px;
@@ -489,7 +535,7 @@ footer {
     font-size: 15px;
     line-height: 26px;
     background-color: #050505;
-    color: var(--medium-gray);
+    color: #909090;
 }
 
 footer h4,
@@ -502,7 +548,7 @@ footer .footer-logo img {
 }
 
 .footer-dark a {
-    color: var(--medium-gray);
+    color: #909090;
 }
 
 .footer-dark a:hover {
@@ -583,6 +629,20 @@ footer ul li {
     .navbar .navbar-nav .simple-dropdown .dropdown-menu {
         width: 100%;
         padding: 0 15px 15px;
+    }
+
+    /* Keep right icons totally inline and spaced properly */
+    .header-icon {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 991px) {
+    .navbar-collapse {
+        background-color: #1a1a1a;
+        padding: 15px;
     }
 }
 
@@ -1111,4 +1171,90 @@ footer.footer-dark ul:not(.small-icon) li a:hover {
 
 .cart-products .product-remove a:hover {
     color: var(--white) !important;
+}
+
+/* Make feature icons gold for better contrast and branding */
+.feature-box-icon img[src*="demo-decor-store-icon-06"],
+.feature-box-icon img[src*="demo-decor-store-icon-07"],
+.feature-box-icon img[src*="demo-decor-store-icon-08"],
+.feature-box-icon img[src*="demo-decor-store-icon-09"] {
+    filter: invert(72%) sepia(34%) saturate(718%) hue-rotate(357deg) brightness(89%) contrast(89%);
+    opacity: 0.9;
+    transition: all 0.3s ease;
+}
+
+.feature-box-icon img[src*="demo-decor-store-icon-06"]:hover,
+.feature-box-icon img[src*="demo-decor-store-icon-07"]:hover,
+.feature-box-icon img[src*="demo-decor-store-icon-08"]:hover,
+.feature-box-icon img[src*="demo-decor-store-icon-09"]:hover {
+    filter: invert(82%) sepia(44%) saturate(818%) hue-rotate(357deg) brightness(99%) contrast(99%);
+    opacity: 1;
+}
+
+/* --- Global UI Overrides for Dark Theme --- */
+
+/* Breadcrumb Visibility */
+section .breadcrumb.breadcrumb-style-01 ul li a,
+.breadcrumb.breadcrumb-style-01 ul li a {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+section .breadcrumb.breadcrumb-style-01 ul li a:hover,
+.breadcrumb.breadcrumb-style-01 ul li a:hover {
+    color: var(--base-color) !important;
+}
+
+section .breadcrumb.breadcrumb-style-01 ul li:after,
+.breadcrumb.breadcrumb-style-01 ul li:after {
+    color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Quantity Selector Refinement */
+.quantity {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 4px;
+    display: inline-flex !important;
+    overflow: hidden;
+}
+
+.quantity .qty-text {
+    background-color: transparent !important;
+    color: var(--white) !important;
+    border: none !important;
+}
+
+.quantity button {
+    background-color: transparent !important;
+    color: var(--white) !important;
+    border: none !important;
+    transition: all 0.3s ease;
+}
+
+.quantity button:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: var(--base-color) !important;
+}
+
+/* Tab Readability */
+.tab-style-04 .nav-tabs .nav-item .nav-link {
+    color: rgba(255, 255, 255, 0.3) !important;
+    transition: all 0.3s ease;
+}
+
+.tab-style-04 .nav-tabs .nav-item .nav-link.active,
+.tab-style-04 .nav-tabs .nav-item .nav-link:hover {
+    color: var(--white) !important;
+}
+
+/* Button Definition */
+.btn.btn-dark-gray {
+    background-color: #121212 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.btn.btn-dark-gray:hover {
+    background-color: var(--base-color) !important;
+    border-color: var(--base-color) !important;
+    color: var(--dark-gray) !important;
 }
