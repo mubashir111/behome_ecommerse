@@ -175,15 +175,100 @@ textarea:-ms-input-placeholder {
     /* Restore the black background so slider content doesn't bleed through the menu */
     .navbar-collapse {
         background-color: var(--dark-gray);
-        padding: 15px;
-        border-radius: 8px;
-        margin-top: 10px;
+        padding: 0;
+        border-radius: 0;
+        margin-top: 0;
+        border: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh !important;
+        z-index: 1000;
+        overflow-y: auto;
+    }
+
+    /* Custom Mobile Menu Header */
+    .mobile-nav-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.03);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        min-height: 80px;
+        /* Ensure consistent height matching the main navbar */
+    }
+
+    .mobile-nav-header .mobile-logo {
+        display: flex;
+        align-items: center;
+    }
+
+    .mobile-nav-header .mobile-logo img {
+        max-height: 50px !important;
+        display: block;
+    }
+
+    .mobile-nav-header .mobile-icons {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        height: 100%;
+    }
+
+    .mobile-nav-header .icon-box,
+    .mobile-nav-header .close-button {
+        width: 42px;
+        height: 42px;
+        background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: var(--white);
+        text-decoration: none;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .mobile-nav-header .close-button {
+        font-size: 20px;
+        cursor: pointer;
     }
 
     /* Ensure the main links have top borders to separate them nicely */
+    .navbar-nav {
+        padding: 20px 0;
+    }
+
     .navbar-nav .nav-item {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 0 20px;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 15px 0 !important;
+        font-size: 14px !important;
+        letter-spacing: 1px;
+    }
+
+    /* Submenu link visibility fix for mobile dark theme */
+    .navbar-nav .dropdown-menu a,
+    .navbar-nav .dropdown-menu .mega-menu ul li a {
+        color: rgba(255, 255, 255, 0.7) !important;
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+        display: inline-block;
+        transition: color 0.3s ease;
+    }
+
+    .navbar-nav .dropdown-menu a:hover,
+    .navbar-nav .dropdown-menu .mega-menu ul li a:hover {
+        color: var(--base-color) !important;
     }
 }
 
