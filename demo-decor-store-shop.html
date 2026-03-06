@@ -1263,6 +1263,17 @@
             }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
             function observeAnimations() {
+                // On mobile, immediately mark all animated elements as visible.
+                // IntersectionObserver threshold fails on mobile when layout is still settling.
+                if (window.innerWidth <= 991) {
+                    document.querySelectorAll('.fade-in-up, .fade-in-left').forEach(function (el) {
+                        el.classList.add('animated');
+                        el.style.transitionDelay = '0s';
+                        el.style.opacity = '1';
+                        el.style.transform = 'none';
+                    });
+                    return;
+                }
                 document.querySelectorAll('.fade-in-up, .fade-in-left').forEach(function (el) {
                     animObserver.observe(el);
                 });
@@ -1305,7 +1316,7 @@
                 window.addEventListener('scroll', function () {
                     if (window.scrollY > 60) {
                         navbar.style.background = 'rgba(10,10,10,0.92)';
-                                                                        navbar.style.boxShadow = '0 2px 30px rgba(0,0,0,0.4)';
+                        navbar.style.boxShadow = '0 2px 30px rgba(0,0,0,0.4)';
                         navbar.style.transition = 'background 0.4s ease, box-shadow 0.4s ease';
                     } else {
                         navbar.style.background = '';
@@ -1346,6 +1357,88 @@
                 highlightActivePage();
                 handleNavbarScroll();
                 addRippleEffect();
+            });
+        })();
+    </script>
+
+    <script>
+        /* ---- MOBILE SHOP GRID ISOTOPE FIX ----
+           Isotope applies position:absolute with pixel top/left values to each
+           .grid-item after images load. On mobile this pushes all items off-screen.
+           We watch for Isotope to finish (it removes 'grid-loading' class), then
+           immediately strip its inline styles so CSS flexbox takes over. */
+        (function () {
+            function isMobileView() {
+                return window.innerWidth <= 991;
+            }
+
+            function fixShopGridForMobile(wrapper) {
+                if (!isMobileView()) return;
+                // Strip all inline styles Isotope placed on each grid item
+                var items = wrapper.querySelectorAll('li.grid-item, .grid-item');
+                items.forEach(function (item) {
+                    item.style.removeProperty('position');
+                    item.style.removeProperty('top');
+                    item.style.removeProperty('left');
+                    item.style.removeProperty('width');
+                    item.style.removeProperty('transform');
+                    item.style.removeProperty('visibility');
+                    item.style.removeProperty('opacity');
+                    item.style.removeProperty('display');
+
+                    // Also fix any shop-box or animated elements inside this item
+                    item.querySelectorAll('.fade-in-up, .fade-in-left, .shop-box').forEach(function (inner) {
+                        inner.classList.add('animated');
+                        inner.style.opacity = '1';
+                        inner.style.transform = 'none';
+                        inner.style.transitionDelay = '0s';
+                    });
+                });
+                // Strip inline height/position Isotope placed on the container
+                wrapper.style.removeProperty('height');
+                wrapper.style.removeProperty('position');
+                // Force flex layout via inline style (highest priority)
+                wrapper.style.display = 'flex';
+                wrapper.style.flexWrap = 'wrap';
+                wrapper.style.height = 'auto';
+            }
+
+            function observeShopWrapper() {
+                var wrappers = document.querySelectorAll('.shop-wrapper');
+                wrappers.forEach(function (wrapper) {
+                    // Watch for Isotope removing 'grid-loading' class (signals done)
+                    var observer = new MutationObserver(function (mutations) {
+                        mutations.forEach(function (mutation) {
+                            if (mutation.attributeName === 'class') {
+                                if (!wrapper.classList.contains('grid-loading')) {
+                                    setTimeout(function () { fixShopGridForMobile(wrapper); }, 80);
+                                    observer.disconnect();
+                                }
+                            }
+                        });
+                    });
+                    observer.observe(wrapper, { attributes: true, attributeFilter: ['class'] });
+
+                    // Belt-and-suspenders: also hook into Isotope layoutComplete
+                    if (window.jQuery && jQuery.fn.isotope) {
+                        jQuery(wrapper).on('layoutComplete', function () {
+                            setTimeout(function () { fixShopGridForMobile(wrapper); }, 80);
+                        });
+                    }
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', observeShopWrapper);
+            } else {
+                observeShopWrapper();
+            }
+
+            // Re-apply if window is resized to mobile
+            window.addEventListener('resize', function () {
+                if (isMobileView()) {
+                    document.querySelectorAll('.shop-wrapper').forEach(fixShopGridForMobile);
+                }
             });
         })();
     </script>

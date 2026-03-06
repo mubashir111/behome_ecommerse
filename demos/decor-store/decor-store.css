@@ -2071,3 +2071,114 @@ select,
         border-color 0.25s ease,
         opacity 0.25s ease !important;
 }
+
+/* ---- 16. MOBILE SHOP PRODUCT GRID FIX ---- */
+/* On mobile, override Isotope/masonry absolute positioning so products are visible */
+@media (max-width: 991px) {
+
+    /* CRITICAL: Force visibility on grid-loading items on mobile.
+       By default .grid-loading .grid-item { visibility: hidden } hides all items
+       until Isotope JS removes the class. On mobile Isotope can fail to re-layout
+       correctly, leaving items hidden or positioned off-screen. */
+    .shop-wrapper.grid-loading .grid-item,
+    .shop-wrapper.grid-loading li.grid-item {
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    /* On mobile, skip scroll animations — show all fade-in-up/left elements immediately.
+       The IntersectionObserver fails on mobile when elements are still repositioning. */
+    .fade-in-up,
+    .fade-in-left,
+    .fade-in-up.animated,
+    .fade-in-left.animated {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    /* Remove the loading spinner overlay on mobile */
+    .shop-wrapper.grid-loading::after,
+    .shop-wrapper.grid-loading::before {
+        display: none !important;
+    }
+
+    /* Reset the isotope grid container to normal flex flow */
+    .shop-wrapper.grid,
+    ul.shop-wrapper {
+        position: relative !important;
+        height: auto !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        padding: 0 !important;
+        margin: 0 -8px !important;
+    }
+
+    /* Reset each grid item from absolute positioning to normal flow */
+    .shop-wrapper .grid-item,
+    .shop-wrapper li.grid-item {
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        width: 50% !important;
+        float: none !important;
+        display: block !important;
+        padding: 8px !important;
+        transform: none !important;
+    }
+
+    /* Hide the grid-sizer helper used by Isotope */
+    .shop-wrapper .grid-sizer {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    /* Fix shop-box: remove white border that appears blank on dark background */
+    .shop-boxed .shop-box {
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 8px !important;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    /* Ensure the product column is full width on mobile (below lg breakpoint) */
+    .col-xxl-10.col-lg-9 {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+        margin-bottom: 40px !important;
+    }
+
+    .col-xxl-2.col-lg-3.shop-sidebar {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+
+    /* Reduce the large top padding gap below the navbar on mobile.
+       Default is 136px (header-with-topbar + top-space-padding).
+       On mobile the header is ~80px so 90px is enough. */
+    .header-with-topbar+.top-space-padding,
+    .top-space-padding {
+        padding-top: 90px !important;
+    }
+
+    /* Also reduce the general section top/bottom padding on mobile */
+    section {
+        padding-top: 60px !important;
+        padding-bottom: 60px !important;
+    }
+}
+
+@media (max-width: 575px) {
+
+    /* On very small phones show 1 product per row */
+    .shop-wrapper .grid-item,
+    .shop-wrapper li.grid-item {
+        width: 100% !important;
+        padding: 8px 0 !important;
+    }
+}
