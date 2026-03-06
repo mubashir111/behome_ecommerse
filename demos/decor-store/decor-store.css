@@ -286,6 +286,7 @@ header .navbar-brand img {
     align-items: center;
     gap: 15px;
     text-decoration: none;
+    flex-wrap: nowrap;
 }
 
 .glass-logo-box {
@@ -301,6 +302,7 @@ header .navbar-brand img {
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .glass-logo-box img {
@@ -317,6 +319,8 @@ header .navbar-brand img {
     letter-spacing: 2px;
     text-align: left;
     text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .logo-sub {
@@ -1637,4 +1641,43 @@ footer.footer-dark.bg-dark-gray.cover-background::before {
     -webkit-backdrop-filter: blur(15px) !important;
     z-index: -1 !important;
     border-top: 1px solid var(--glass-border) !important;
+}
+
+/* --- Mobile Menu Visibility Overrides --- */
+@media (max-width: 991px) {
+
+    /* Navbar Toggles Visibility on Mobile */
+    .navbar .navbar-nav .dropdown-toggle,
+    .navbar-nav .dropdown-toggle,
+    .nav-item .dropdown-toggle {
+        color: #fff !important;
+        opacity: 0.9;
+    }
+
+    /* Mobile Menu Text Contrast Improvements - broader selectors */
+    .navbar-collapse .text-dark-gray,
+    .navbar-collapse .btn-text.text-dark-gray,
+    .navbar-collapse .sub-title,
+    .dropdown-menu .text-dark-gray,
+    .submenu-content .text-dark-gray,
+    .mega-menu .text-dark-gray {
+        color: #fff !important;
+    }
+
+    /* All links inside mega menus on mobile */
+    .navbar-collapse .mega-menu a,
+    .submenu-content .mega-menu a,
+    .dropdown-menu .mega-menu a {
+        color: rgba(255, 255, 255, 0.75) !important;
+    }
+
+    .navbar-collapse .mega-menu a:hover,
+    .submenu-content .mega-menu a:hover {
+        color: var(--base-color) !important;
+    }
+
+    /* Sub-titles in Shop mega menu */
+    .navbar-collapse .sub-title {
+        color: var(--base-color) !important;
+    }
 }
