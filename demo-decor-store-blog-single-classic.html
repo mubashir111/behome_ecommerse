@@ -914,5 +914,107 @@
             });
         });
     </script>
+
+    <!-- Behome Premium Animation System -->
+    <script>
+        (function () {
+            'use strict';
+
+            var animObserver = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animated');
+                        animObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+            function observeAnimations() {
+                document.querySelectorAll('.fade-in-up, .fade-in-left').forEach(function (el) {
+                    animObserver.observe(el);
+                });
+            }
+
+            function applyAnimationClasses() {
+                var sectionSelectors = [
+                    'section .container > .row',
+                    'section .container-fluid > .row',
+                    '.shop-box',
+                    '.feature-box',
+                    '.categories-style-01',
+                    'footer .footer-title',
+                    'footer .col-lg-3',
+                    'footer .col-lg-2'
+                ];
+                sectionSelectors.forEach(function (sel) {
+                    document.querySelectorAll(sel).forEach(function (el, idx) {
+                        if (!el.classList.contains('fade-in-up')) {
+                            el.classList.add('fade-in-up');
+                            el.style.transitionDelay = (idx * 0.07) + 's';
+                        }
+                    });
+                });
+                var grids = document.querySelectorAll('.row.row-cols-1.row-cols-lg-4, .row.row-cols-1.row-cols-md-3');
+                grids.forEach(function (grid) { grid.classList.add('stagger-children'); });
+            }
+
+            function highlightActivePage() {
+                var path = window.location.pathname.split('/').pop() || 'index.html';
+                document.querySelectorAll('.navbar-nav .nav-link').forEach(function (link) {
+                    var href = link.getAttribute('href');
+                    if (href && href === path) { link.parentElement.classList.add('active'); }
+                });
+            }
+
+            function handleNavbarScroll() {
+                var navbar = document.querySelector('header nav.navbar');
+                if (!navbar) return;
+                window.addEventListener('scroll', function () {
+                    if (window.scrollY > 60) {
+                        navbar.style.background = 'rgba(10,10,10,0.92)';
+                                                                        navbar.style.boxShadow = '0 2px 30px rgba(0,0,0,0.4)';
+                        navbar.style.transition = 'background 0.4s ease, box-shadow 0.4s ease';
+                    } else {
+                        navbar.style.background = '';
+                        navbar.style.boxShadow = '';
+                    }
+                }, { passive: true });
+            }
+
+            function addRippleEffect() {
+                document.addEventListener('click', function (e) {
+                    var btn = e.target.closest('.btn');
+                    if (!btn) return;
+                    var ripple = document.createElement('span');
+                    var rect = btn.getBoundingClientRect();
+                    var size = Math.max(rect.width, rect.height);
+                    ripple.style.cssText = [
+                        'position:absolute', 'border-radius:50%', 'transform:scale(0)',
+                        'animation:rippleEffect 0.5s ease-out forwards',
+                        'background:rgba(197,160,89,0.25)', 'pointer-events:none',
+                        'width:' + size + 'px', 'height:' + size + 'px',
+                        'top:' + (e.clientY - rect.top - size / 2) + 'px',
+                        'left:' + (e.clientX - rect.left - size / 2) + 'px'
+                    ].join(';');
+                    btn.appendChild(ripple);
+                    setTimeout(function () { ripple.remove(); }, 600);
+                });
+                if (!document.getElementById('behome-ripple-style')) {
+                    var style = document.createElement('style');
+                    style.id = 'behome-ripple-style';
+                    style.textContent = '@keyframes rippleEffect{to{transform:scale(2.5);opacity:0;}}';
+                    document.head.appendChild(style);
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                applyAnimationClasses();
+                observeAnimations();
+                highlightActivePage();
+                handleNavbarScroll();
+                addRippleEffect();
+            });
+        })();
+    </script>
 </body>
 </html>

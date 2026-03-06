@@ -381,15 +381,13 @@
                                 </a>
                             </div>
                             <!-- Language Icon Box -->
-                            <div
-                                class="position-relative d-flex align-items-center glass-icon-box d-none d-lg-flex">
+                            <div class="position-relative d-flex align-items-center glass-icon-box d-none d-lg-flex">
                                 <a class="alt-font text-white fw-700 fs-13 lh-1" href="#">
                                     EN
                                 </a>
                             </div>
                             <!-- Mobile Menu Toggler -->
-                            <div
-                                class="glass-icon-box d-flex align-items-center justify-content-center d-lg-none">
+                            <div class="glass-icon-box d-flex align-items-center justify-content-center d-lg-none">
                                 <button aria-controls="navbarNav" aria-label="Toggle navigation"
                                     class="navbar-toggler p-0 border-0 bg-transparent" data-bs-target="#navbarNav"
                                     data-bs-toggle="collapse" type="button">
@@ -915,14 +913,13 @@
                                         <h5 class="alt-font text-white ls-minus-1px mb-25px xs-mb-20px">Zenn
                                             <span class="fw-700">Bed</span>
                                         </h5>
-                                        <div class="mb-25px text-white opacity-7">From from: <span
-                                                class="fw-700">£399.00</span></div>
-                                        <a class="btn btn-switch-text btn-transparent-white-light btn-small border-1 btn-round-edge pt-10px pb-10px ps-25px pe-25px"
+                                        <!-- <div class="mb-25px text-white opacity-7">From from: <span
+                                                class="fw-700">£399.00</span></div> -->
+                                        <a class="btn btn-dark-gray btn-small btn-switch-text btn-round-edge btn-box-shadow"
                                             href="demo-decor-store-shop.html">
                                             <span>
-                                                <span class="btn-double-text text-uppercase" data-text="SHOP BEDS">SHOP
-                                                    BEDS</span>
-                                                <i class="feather icon-feather-arrow-right"></i>
+                                                <span class="btn-double-text" data-text="Explore category">Explore
+                                                    category</span>
                                             </span>
                                         </a>
                                     </div>
@@ -2229,6 +2226,129 @@
                 dropdown.addEventListener('mouseenter', updateMegaMenuPosition);
             });
         });
+    </script>
+
+    <!-- Behome Premium Animation System -->
+    <script>
+        (function () {
+            'use strict';
+
+            // --- Intersection Observer for scroll-triggered animations ---
+            var animObserver = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animated');
+                        animObserver.unobserve(entry.target); // Only animate once
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+            // Observe all elements with our animation classes
+            function observeAnimations() {
+                document.querySelectorAll('.fade-in-up, .fade-in-left').forEach(function (el) {
+                    animObserver.observe(el);
+                });
+            }
+
+            // Auto-apply fade-in-up to key section elements
+            function applyAnimationClasses() {
+                // Sections - add fade-in-up to direct children
+                var sectionSelectors = [
+                    'section .container > .row',
+                    'section .container-fluid > .row',
+                    '.shop-box',
+                    '.feature-box',
+                    '.categories-style-01',
+                    'footer .footer-title',
+                    'footer .col-lg-3',
+                    'footer .col-lg-2'
+                ];
+
+                sectionSelectors.forEach(function (sel) {
+                    document.querySelectorAll(sel).forEach(function (el, idx) {
+                        if (!el.classList.contains('fade-in-up')) {
+                            el.classList.add('fade-in-up');
+                            el.style.transitionDelay = (idx * 0.07) + 's';
+                        }
+                    });
+                });
+
+                // Product cards get stagger
+                var grids = document.querySelectorAll('.row.row-cols-1.row-cols-lg-4, .row.row-cols-1.row-cols-md-3');
+                grids.forEach(function (grid) {
+                    grid.classList.add('stagger-children');
+                });
+            }
+
+            // Navbar link active state based on path
+            function highlightActivePage() {
+                var path = window.location.pathname.split('/').pop() || 'index.html';
+                document.querySelectorAll('.navbar-nav .nav-link').forEach(function (link) {
+                    var href = link.getAttribute('href');
+                    if (href && href === path) {
+                        link.parentElement.classList.add('active');
+                    }
+                });
+            }
+
+            // Smooth header background on scroll
+            function handleNavbarScroll() {
+                var navbar = document.querySelector('header nav.navbar');
+                if (!navbar) return;
+                window.addEventListener('scroll', function () {
+                    if (window.scrollY > 60) {
+                        navbar.style.background = 'rgba(10,10,10,0.92)';
+                        navbar.style.boxShadow = '0 2px 30px rgba(0,0,0,0.4)';
+                        navbar.style.transition = 'background 0.4s ease, box-shadow 0.4s ease';
+                    } else {
+                        navbar.style.background = '';
+                        navbar.style.boxShadow = '';
+                    }
+                }, { passive: true });
+            }
+
+            // Button press ripple effect
+            function addRippleEffect() {
+                document.addEventListener('click', function (e) {
+                    var btn = e.target.closest('.btn');
+                    if (!btn) return;
+                    var ripple = document.createElement('span');
+                    var rect = btn.getBoundingClientRect();
+                    var size = Math.max(rect.width, rect.height);
+                    ripple.style.cssText = [
+                        'position:absolute',
+                        'border-radius:50%',
+                        'transform:scale(0)',
+                        'animation:rippleEffect 0.5s ease-out forwards',
+                        'background:rgba(197,160,89,0.25)',
+                        'pointer-events:none',
+                        'width:' + size + 'px',
+                        'height:' + size + 'px',
+                        'top:' + (e.clientY - rect.top - size / 2) + 'px',
+                        'left:' + (e.clientX - rect.left - size / 2) + 'px'
+                    ].join(';');
+                    btn.appendChild(ripple);
+                    setTimeout(function () { ripple.remove(); }, 600);
+                });
+
+                // Inject ripple keyframe if not already present
+                if (!document.getElementById('behome-ripple-style')) {
+                    var style = document.createElement('style');
+                    style.id = 'behome-ripple-style';
+                    style.textContent = '@keyframes rippleEffect{to{transform:scale(2.5);opacity:0;}}';
+                    document.head.appendChild(style);
+                }
+            }
+
+            // Init on DOM ready
+            document.addEventListener('DOMContentLoaded', function () {
+                applyAnimationClasses();
+                observeAnimations();
+                highlightActivePage();
+                handleNavbarScroll();
+                addRippleEffect();
+            });
+        })();
     </script>
 </body>
 
